@@ -10,6 +10,9 @@ class DashboardData {
   final int jumpStartCount;
   final int openCount;
 
+  /// ✅ NEW FIELD
+  final int pendingDocuments;
+
   DashboardData({
     required this.totalProductAmount,
     required this.completedCount,
@@ -19,6 +22,7 @@ class DashboardData {
     required this.inProgressCount,
     required this.jumpStartCount,
     required this.openCount,
+    required this.pendingDocuments, // include in constructor
   });
 
   factory DashboardData.fromJson(Map<String, dynamic> json) {
@@ -37,6 +41,10 @@ class DashboardData {
       jumpStartCount:
           int.tryParse(json['jumpStartCount']?.toString() ?? '0') ?? 0,
       openCount: int.tryParse(json['openCount']?.toString() ?? '0') ?? 0,
+
+      /// ✅ NEW MAPPING
+      pendingDocuments:
+          int.tryParse(json['pendingDocuments']?.toString() ?? '0') ?? 0,
     );
   }
 }

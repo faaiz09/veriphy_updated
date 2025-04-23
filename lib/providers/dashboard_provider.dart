@@ -1,3 +1,5 @@
+// lib/providers/dashboard_provider.dart
+
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
@@ -16,17 +18,20 @@ class DashboardProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
 
+  /// ✅ New Getter Added
+  int get pendingDocuments => _dashboardData?.pendingDocuments ?? 0;
+
   Future<void> loadDashboard() async {
     try {
       _isLoading = true;
       _error = null;
       notifyListeners();
 
-      print('Loading dashboard data...'); // Debug print
+      print('Loading dashboard data...');
       _dashboardData = await _apiService.getDashboardData();
-      print('Dashboard data loaded: $_dashboardData'); // Debug print
+      print('Dashboard data loaded: $_dashboardData');
     } catch (e) {
-      print('Error loading dashboard: $e'); // Debug print
+      print('Error loading dashboard: $e');
       _error = e.toString();
     } finally {
       _isLoading = false;

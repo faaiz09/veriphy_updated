@@ -1,11 +1,12 @@
+// ignore_for_file: prefer_const_declarations
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rm_veriphy/providers/auth_provider.dart';
 import 'package:rm_veriphy/providers/theme_provider.dart';
-// import 'package:rm_veriphy/screens/home_screen.dart';
 import 'package:rm_veriphy/screens/loading_screen.dart';
 import 'package:rm_veriphy/utils/error_utils.dart';
-// import 'package:lottie/lottie.dart';
+import 'package:rm_veriphy/utils/token_manager.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -22,9 +23,25 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _rememberMe = false;
 
   @override
+  void initState() {
+    super.initState();
+    _loadRememberMePreference();
+  }
+
+  Future<void> _loadRememberMePreference() async {
+    final rememberMe = await TokenManager.isRememberMeEnabled();
+    if (mounted) {
+      setState(() {
+        _rememberMe = rememberMe;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final size = MediaQuery.of(context).size;
+    final primaryColor = const Color(0xFFa7d222); // New theme color
 
     return Scaffold(
       backgroundColor: themeProvider.theme.scaffoldBackgroundColor,
@@ -36,41 +53,54 @@ class _LoginScreenState extends State<LoginScreen> {
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
               colors: [
-                const Color(0xFF3B5998).withOpacity(0.1),
+                primaryColor.withOpacity(0.2),
                 Colors.white,
                 Colors.white,
-                const Color(0xFF3B5998).withOpacity(0.1),
+                primaryColor.withOpacity(0.2),
               ],
             ),
           ),
           child: SafeArea(
             child: Column(
               children: [
-                // Logo Section
+                // Logo Section with enhanced styling
                 const SizedBox(height: 40),
-                Image.asset(
-                  'assets/images/veriphy.png',
-                  width: size.width * 0.4,
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: primaryColor.withOpacity(0.3),
+                        blurRadius: 20,
+                        spreadRadius: 5,
+                      ),
+                    ],
+                  ),
+                  child: Image.asset(
+                    'assets/images/veriphy.png',
+                    width: size.width * 0.35,
+                  ),
                 ),
 
                 // Form Section
                 Expanded(
                   child: Container(
-                    margin: const EdgeInsets.only(top: 40),
+                    margin: const EdgeInsets.only(top: 30),
                     padding: const EdgeInsets.symmetric(horizontal: 32),
                     child: Form(
                       key: _formKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          // Welcome Text
+                          // Welcome Text with enhanced styling
                           Text(
                             'Welcome Back',
                             style: TextStyle(
-                              fontSize: 28,
+                              fontSize: 32,
                               fontWeight: FontWeight.bold,
-                              color: themeProvider
-                                  .theme.textTheme.headlineLarge?.color,
+                              color: primaryColor,
+                              letterSpacing: 0.5,
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -79,11 +109,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.grey[600],
+                              letterSpacing: 0.3,
                             ),
                           ),
                           const SizedBox(height: 40),
 
-                          // Email Field
+                          // Email Field with enhanced styling
                           TextFormField(
                             controller: _emailController,
                             decoration: InputDecoration(
@@ -91,17 +122,24 @@ class _LoginScreenState extends State<LoginScreen> {
                               hintText: 'Enter your email',
                               prefixIcon: Icon(
                                 Icons.email_outlined,
-                                color: themeProvider.theme.primaryColor,
+                                color: primaryColor,
                               ),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(16),
                                 borderSide: BorderSide.none,
                               ),
                               filled: true,
-                              fillColor: themeProvider.theme.cardColor,
+                              fillColor: Colors.grey[100],
                               contentPadding: const EdgeInsets.symmetric(
-                                vertical: 16,
+                                vertical: 18,
                                 horizontal: 16,
+                              ),
+                              labelStyle: TextStyle(
+                                  color: primaryColor.withOpacity(0.8)),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide:
+                                    BorderSide(color: primaryColor, width: 2),
                               ),
                             ),
                             keyboardType: TextInputType.emailAddress,
@@ -119,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           const SizedBox(height: 20),
 
-                          // Password Field
+                          // Password Field with enhanced styling
                           TextFormField(
                             controller: _passwordController,
                             obscureText: _obscurePassword,
@@ -128,14 +166,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               hintText: 'Enter your password',
                               prefixIcon: Icon(
                                 Icons.lock_outline,
-                                color: themeProvider.theme.primaryColor,
+                                color: primaryColor,
                               ),
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   _obscurePassword
                                       ? Icons.visibility_outlined
                                       : Icons.visibility_off_outlined,
-                                  color: themeProvider.theme.primaryColor,
+                                  color: primaryColor,
                                 ),
                                 onPressed: () {
                                   setState(() {
@@ -144,14 +182,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                 },
                               ),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(16),
                                 borderSide: BorderSide.none,
                               ),
                               filled: true,
-                              fillColor: themeProvider.theme.cardColor,
+                              fillColor: Colors.grey[100],
                               contentPadding: const EdgeInsets.symmetric(
-                                vertical: 16,
+                                vertical: 18,
                                 horizontal: 16,
+                              ),
+                              labelStyle: TextStyle(
+                                  color: primaryColor.withOpacity(0.8)),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(16),
+                                borderSide:
+                                    BorderSide(color: primaryColor, width: 2),
                               ),
                             ),
                             enabled: !context.watch<AuthProvider>().isLoading,
@@ -167,7 +212,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           const SizedBox(height: 16),
 
-                          // Remember Me & Forgot Password
+                          // Remember Me & Forgot Password with enhanced styling
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -186,13 +231,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(4),
                                       ),
+                                      activeColor: primaryColor,
                                     ),
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
                                     'Remember Me',
                                     style: TextStyle(
-                                      color: Colors.grey[600],
+                                      color: Colors.grey[700],
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
                                 ],
@@ -201,11 +248,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onPressed: () {
                                   // Forgot password logic
                                 },
-                                child: Text(
+                                style: TextButton.styleFrom(
+                                  foregroundColor: primaryColor,
+                                ),
+                                child: const Text(
                                   'Forgot Password?',
                                   style: TextStyle(
-                                    color: themeProvider.theme.primaryColor,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ),
@@ -213,39 +262,39 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           const SizedBox(height: 32),
 
-                          // Login Button
+                          // Login Button with enhanced styling
                           Consumer<AuthProvider>(
                             builder: (context, auth, _) {
                               return ElevatedButton(
                                 onPressed: auth.isLoading ? null : _handleLogin,
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      themeProvider.theme.primaryColor,
+                                  backgroundColor: primaryColor,
                                   foregroundColor: Colors.white,
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 16),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
-                                  elevation: 2,
+                                  elevation: 1,
+                                  shadowColor: Colors.grey[400],
                                 ),
                                 child: auth.isLoading
-                                    ? SizedBox(
+                                    ? const SizedBox(
                                         height: 24,
                                         width: 24,
                                         child: CircularProgressIndicator(
                                           strokeWidth: 2,
                                           valueColor:
                                               AlwaysStoppedAnimation<Color>(
-                                            themeProvider.theme.primaryColor,
-                                          ),
+                                                  Colors.white),
                                         ),
                                       )
                                     : const Text(
                                         'Sign In',
                                         style: TextStyle(
                                           fontSize: 16,
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.w600,
+                                          letterSpacing: 0.3,
                                         ),
                                       ),
                               );
@@ -256,13 +305,19 @@ class _LoginScreenState extends State<LoginScreen> {
                           Consumer<AuthProvider>(
                             builder: (context, auth, _) {
                               if (auth.error != null) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(top: 16),
+                                return Container(
+                                  margin: const EdgeInsets.only(top: 16),
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                        color: Colors.red.withOpacity(0.3)),
+                                  ),
                                   child: Text(
                                     auth.error!,
-                                    style: TextStyle(
-                                      color:
-                                          themeProvider.theme.colorScheme.error,
+                                    style: const TextStyle(
+                                      color: Colors.red,
                                       fontSize: 14,
                                     ),
                                     textAlign: TextAlign.center,

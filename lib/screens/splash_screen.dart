@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
+import 'package:rm_veriphy/providers/auth_provider.dart';
+import 'package:rm_veriphy/screens/loading_screen.dart';
 import 'package:rm_veriphy/screens/login_screen.dart';
+import 'package:rm_veriphy/utils/token_manager.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -50,20 +54,53 @@ class _SplashScreenState extends State<SplashScreen>
     _controller.forward().then((_) {
       Future.delayed(const Duration(milliseconds: 500), () {
         if (mounted) {
-          Navigator.pushReplacement(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) =>
-                  FadeTransition(
-                opacity: animation,
-                child: const LoginScreen(),
-              ),
-              transitionDuration: const Duration(milliseconds: 800),
-            ),
-          );
+          _checkAuthAndNavigate();
         }
       });
     });
+  }
+
+  Future<void> _checkAuthAndNavigate() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    
+    // Check if remember me is enabled and token exists
+    final rememberMe = await TokenManager.isRememberMeEnabled();
+    final hasToken = await TokenManager.hasToken();
+    
+    if (rememberMe && hasToken) {
+      // Attempt to authenticate with stored token
+      await authProvider.checkAuthStatus();
+      
+      if (authProvider.isAuthenticated && mounted) {
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                FadeTransition(
+              opacity: animation,
+              child: const LoadingScreen(),
+            ),
+            transitionDuration: const Duration(milliseconds: 800),
+          ),
+        );
+        return;
+      }
+    }
+    
+    // If not authenticated or no token, go to login screen
+    if (mounted) {
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              FadeTransition(
+            opacity: animation,
+            child: const LoginScreen(),
+          ),
+          transitionDuration: const Duration(milliseconds: 800),
+        ),
+      );
+    }
   }
 
   @override
@@ -85,10 +122,10 @@ class _SplashScreenState extends State<SplashScreen>
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
                 colors: [
-                  const Color(0xFF3B5998).withOpacity(0.1),
+                  const Color(0xFFa7d222).withOpacity(0.1),
                   Colors.white,
                   Colors.white,
-                  const Color(0xFF3B5998).withOpacity(0.1),
+                  const Color(0xFFa7d222).withOpacity(0.1),
                 ],
               ),
             ),
@@ -136,7 +173,7 @@ class _SplashScreenState extends State<SplashScreen>
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF3B5998),
+                            color: Color.fromRGBO(167, 210, 34, 1),
                             letterSpacing: 0.5,
                           ),
                         ),

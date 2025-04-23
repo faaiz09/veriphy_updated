@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../controllers/calender_controller.dart';
 import '../../models/task_model.dart';
 import '../../screens/add_task_dialog.dart';
+import 'package:intl/intl.dart';
 
 class DailyView extends StatelessWidget {
   const DailyView({super.key});
@@ -18,10 +19,11 @@ class DailyView extends StatelessWidget {
     return Column(
       children: [
         _buildDateHeader(context),
+        _buildTimelineHeader(context),
         Expanded(
           child: tasks.isEmpty
               ? _buildEmptyState()
-              : _buildTasksList(context, tasks),
+              : _buildTasksTimeline(context, tasks),
         ),
       ],
     );
@@ -29,24 +31,85 @@ class DailyView extends StatelessWidget {
 
   Widget _buildDateHeader(BuildContext context) {
     final controller = Provider.of<CalendarController>(context);
-    return Padding(
+    return Container(
       padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Row(
         children: [
-          Text(
-            'Schedule Today',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Theme.of(context).primaryColor,
+          IconButton(
+            icon: const Icon(Icons.chevron_left),
+            onPressed: () => controller.selectDate(
+              controller.selectedDate.subtract(const Duration(days: 1)),
             ),
           ),
-          const Spacer(),
-          Text(
-            controller.getWeekDayName(controller.selectedDate),
-            style: TextStyle(
-              color: Colors.grey[600],
-              fontWeight: FontWeight.w500,
+          Expanded(
+            child: GestureDetector(
+              onTap: () async {
+                final DateTime? picked = await showDatePicker(
+                  context: context,
+                  initialDate: controller.selectedDate,
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime(2101),
+                );
+                if (picked != null) {
+                  controller.selectDate(picked);
+                }
+              },
+              child: Column(
+                children: [
+                  Text(
+                    DateFormat('EEEE').format(controller.selectedDate),
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                  Text(
+                    DateFormat('MMMM d, y').format(controller.selectedDate),
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.chevron_right),
+            onPressed: () => controller.selectDate(
+              controller.selectedDate.add(const Duration(days: 1)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTimelineHeader(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Row(
+        children: [
+          const SizedBox(width: 60),
+          Expanded(
+            child: Text(
+              'Schedule',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Theme.of(context).primaryColor,
+              ),
             ),
           ),
         ],
@@ -72,29 +135,40 @@ class DailyView extends StatelessWidget {
               color: Colors.grey[600],
             ),
           ),
+          const SizedBox(height: 8),
+          Text(
+            'Tap + to add a new task',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey[500],
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildTasksList(BuildContext context, List<Task> tasks) {
-    return ReorderableListView.builder(
+  Widget _buildTasksTimeline(BuildContext context, List<Task> tasks) {
+    // Sort tasks by start time
+    tasks.sort((a, b) {
+      final aMinutes = a.startTime.hour * 60 + a.startTime.minute;
+      final bMinutes = b.startTime.hour * 60 + b.startTime.minute;
+      return aMinutes.compareTo(bMinutes);
+    });
+
+    return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: tasks.length,
-      onReorder: (oldIndex, newIndex) {
-        Provider.of<CalendarController>(context, listen: false)
-            .reorderTasks(oldIndex, newIndex);
-      },
       itemBuilder: (context, index) {
         final task = tasks[index];
-        return _buildTaskCard(context, task, Key(task.id));
+        return _buildTaskTimelineItem(context, task, index == 0, index == tasks.length - 1);
       },
     );
   }
 
-  Widget _buildTaskCard(BuildContext context, Task task, Key key) {
+  Widget _buildTaskTimelineItem(BuildContext context, Task task, bool isFirst, bool isLast) {
     return Dismissible(
-      key: key,
+      key: Key(task.id),
       direction: DismissDirection.endToStart,
       background: Container(
         alignment: Alignment.centerRight,
@@ -106,91 +180,120 @@ class DailyView extends StatelessWidget {
         Provider.of<CalendarController>(context, listen: false)
             .deleteTask(task.id);
       },
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildTimeColumn(task),
-            Expanded(child: _buildTaskContent(context, task)),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTimeColumn(Task task) {
-    return SizedBox(
-      width: 60,
-      child: Text(
-        '${task.startTime.hour.toString().padLeft(2, '0')}:${task.startTime.minute.toString().padLeft(2, '0')}',
-        style: const TextStyle(
-          fontWeight: FontWeight.w500,
-          color: Colors.grey,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTaskContent(BuildContext context, Task task) {
-    return GestureDetector(
-      onTap: () => _editTask(context, task),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: task.color.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: task.color.withOpacity(0.3),
-          ),
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    task.title,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 60,
+            child: Column(
+              children: [
+                Text(
+                  '${task.startTime.hour.toString().padLeft(2, '0')}:${task.startTime.minute.toString().padLeft(2, '0')}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey,
                   ),
-                  if (task.subtitle.isNotEmpty) ...[
-                    const SizedBox(height: 4),
-                    Text(
-                      task.subtitle,
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 14,
-                      ),
+                ),
+                Container(
+                  height: 100,
+                  width: 2,
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  decoration: BoxDecoration(
+                    color: task.color.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(1),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: GestureDetector(
+              onTap: () => _editTask(context, task),
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 16, left: 8),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: task.color.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: task.color.withOpacity(0.3),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.1),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
                     ),
                   ],
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      Icon(Icons.access_time,
-                          size: 16, color: Colors.grey[600]),
-                      const SizedBox(width: 4),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: task.color.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            task.type.name,
+                            style: TextStyle(
+                              color: task.color,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          icon: const Icon(Icons.more_horiz, size: 20),
+                          onPressed: () => _editTask(context, task),
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      task.title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                    ),
+                    if (task.subtitle.isNotEmpty) ...[
+                      const SizedBox(height: 4),
                       Text(
-                        '${task.startTime.format(context)} - ${task.endTime.format(context)}',
+                        task.subtitle,
                         style: TextStyle(
                           color: Colors.grey[600],
-                          fontSize: 12,
+                          fontSize: 14,
                         ),
                       ),
                     ],
-                  ),
-                ],
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Icon(Icons.access_time,
+                            size: 16, color: Colors.grey[600]),
+                        const SizedBox(width: 4),
+                        Text(
+                          '${task.startTime.format(context)} - ${task.endTime.format(context)}',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-            Icon(
-              Icons.drag_handle,
-              color: Colors.grey[400],
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -219,4 +322,8 @@ class DailyView extends StatelessWidget {
           .updateTask(updatedTask);
     }
   }
+}
+
+extension on String {
+  String get name => this;
 }

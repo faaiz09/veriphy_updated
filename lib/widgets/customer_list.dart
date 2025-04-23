@@ -228,7 +228,7 @@ class _CustomerCard extends StatelessWidget {
         color: isDarkMode ? Colors.white70 : null,
       ),
       label: Text(
-        'View Details',
+        'View',
         style: TextStyle(
           color: isDarkMode ? Colors.white70 : null,
         ),

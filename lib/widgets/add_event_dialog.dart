@@ -138,7 +138,7 @@ class _AddEventDialogState extends State<AddEventDialog> {
                       type: _selectedType,
                       startTime: _startTime,
                       endTime: _endTime,
-                      color: _selectedColor,
+                      color: _selectedColor, date: widget.selectedDate,
                     );
                     Navigator.pop(context, event);
                   },

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_declarations
+
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:rm_veriphy/screens/home_screen.dart';
@@ -92,6 +94,8 @@ class _LoadingScreenState extends State<LoadingScreen>
 
   @override
   Widget build(BuildContext context) {
+    final primaryColor = const Color(0xFFa7d222); // Green theme color
+    
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -100,9 +104,9 @@ class _LoadingScreenState extends State<LoadingScreen>
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
             colors: [
-              const Color(0xFF3B5998),
-              const Color(0xFF2B4886),
-              const Color(0xFF1B3774).withOpacity(0.9),
+              Colors.white,
+              Colors.grey[50]!,
+              Colors.grey[100]!,
             ],
           ),
         ),
@@ -119,10 +123,22 @@ class _LoadingScreenState extends State<LoadingScreen>
                     offset: Offset(0, _slideAnimation.value),
                     child: Opacity(
                       opacity: _fadeAnimation.value,
-                      child: Image.asset(
-                        'assets/images/veriphy.png',
-                        width: 180,
-                        color: Colors.white,
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: primaryColor.withOpacity(0.2),
+                              blurRadius: 15,
+                              spreadRadius: 2,
+                            ),
+                          ],
+                        ),
+                        child: Image.asset(
+                          'assets/images/veriphy.png',
+                          width: 160,
+                        ),
                       ),
                     ),
                   );
@@ -135,22 +151,22 @@ class _LoadingScreenState extends State<LoadingScreen>
                 builder: (context, child) {
                   return Opacity(
                     opacity: _fadeAnimation.value,
-                    child: const Column(
+                    child: Column(
                       children: [
                         Text(
                           'Welcome Back',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.grey[800],
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 0.5,
                           ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
                           'Preparing your workspace',
                           style: TextStyle(
-                            color: Colors.white70,
+                            color: Colors.grey[600],
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                           ),
@@ -174,10 +190,18 @@ class _LoadingScreenState extends State<LoadingScreen>
                           padding: const EdgeInsets.all(20),
                           margin: const EdgeInsets.symmetric(vertical: 20),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.1),
+                                blurRadius: 10,
+                                spreadRadius: 0,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
                             border: Border.all(
-                              color: Colors.white.withOpacity(0.2),
+                              color: Colors.grey.withOpacity(0.1),
                               width: 1,
                             ),
                           ),
@@ -188,18 +212,21 @@ class _LoadingScreenState extends State<LoadingScreen>
                                 'Documents',
                                 _progressAnimation.value,
                                 Icons.description_outlined,
+                                primaryColor,
                               ),
                               _buildVerticalDivider(),
                               _buildStatItem(
                                 'Tasks',
                                 _progressAnimation.value,
                                 Icons.task_outlined,
+                                primaryColor,
                               ),
                               _buildVerticalDivider(),
                               _buildStatItem(
                                 'Updates',
                                 _progressAnimation.value,
                                 Icons.update_outlined,
+                                primaryColor,
                               ),
                             ],
                           ),
@@ -209,7 +236,7 @@ class _LoadingScreenState extends State<LoadingScreen>
                     const SizedBox(height: 30),
                     // Loader
                     LoadingAnimationWidget.staggeredDotsWave(
-                      color: Colors.white,
+                      color: primaryColor,
                       size: 40,
                     ),
                     const SizedBox(height: 30),
@@ -220,10 +247,10 @@ class _LoadingScreenState extends State<LoadingScreen>
                         return Column(
                           children: [
                             Container(
-                              height: 4,
+                              height: 6,
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.2),
+                                color: Colors.grey[200],
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
@@ -232,7 +259,12 @@ class _LoadingScreenState extends State<LoadingScreen>
                                     flex: _progressAnimation.value.toInt(),
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        color: Colors.white,
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            primaryColor,
+                                            primaryColor.withOpacity(0.8),
+                                          ],
+                                        ),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                     ),
@@ -251,15 +283,16 @@ class _LoadingScreenState extends State<LoadingScreen>
                               children: [
                                 Text(
                                   _loadingTexts[_currentTextIndex],
-                                  style: const TextStyle(
-                                    color: Colors.white70,
+                                  style: TextStyle(
+                                    color: Colors.grey[700],
                                     fontSize: 14,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                                 Text(
                                   '${_progressAnimation.value.toInt()}%',
-                                  style: const TextStyle(
-                                    color: Colors.white,
+                                  style: TextStyle(
+                                    color: primaryColor,
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -285,11 +318,11 @@ class _LoadingScreenState extends State<LoadingScreen>
     return Container(
       height: 40,
       width: 1,
-      color: Colors.white.withOpacity(0.2),
+      color: Colors.grey.withOpacity(0.2),
     );
   }
 
-  Widget _buildStatItem(String label, double progress, IconData icon) {
+  Widget _buildStatItem(String label, double progress, IconData icon, Color primaryColor) {
     final targetValue = _targetStats[label] ?? 0;
     final currentValue = ((progress / 100) * targetValue).round();
 
@@ -298,7 +331,7 @@ class _LoadingScreenState extends State<LoadingScreen>
       children: [
         Icon(
           icon,
-          color: Colors.white.withOpacity(0.9),
+          color: primaryColor,
           size: 24,
         ),
         const SizedBox(height: 12),
@@ -307,8 +340,8 @@ class _LoadingScreenState extends State<LoadingScreen>
           child: FittedBox(
             child: Text(
               currentValue.toString(),
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: Colors.grey[800],
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 0.5,
@@ -320,7 +353,7 @@ class _LoadingScreenState extends State<LoadingScreen>
         Text(
           label,
           style: TextStyle(
-            color: Colors.white.withOpacity(0.7),
+            color: Colors.grey[600],
             fontSize: 12,
             letterSpacing: 0.5,
           ),

@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ThemeProvider with ChangeNotifier {
   static const String _themeKey = 'dark_mode';
@@ -18,7 +19,7 @@ class ThemeProvider with ChangeNotifier {
     _locale = Locale(_prefs.getString(_languageKey) ?? 'en');
   }
 
-    void setLocale(String languageCode) {
+  void setLocale(String languageCode) {
     _locale = Locale(languageCode);
     _prefs.setString(_languageKey, languageCode);
     notifyListeners();
@@ -29,12 +30,14 @@ class ThemeProvider with ChangeNotifier {
   ThemeData get theme => _isDarkMode ? _darkTheme : _lightTheme;
 
   static final _lightTheme = ThemeData(
-    primaryColor: const Color(0xFF3B5998),
+    primaryColor: const Color(0xFFA7D222),
     colorScheme: const ColorScheme.light(
-      primary: Color(0xFF3B5998),
-      secondary: Color(0xFF4A90E2),
+      primary: Color(0xFFA7D222),
+      secondary: Color(0xFFA7D222),
       error: Colors.red,
     ),
+    fontFamily: 'Inter',
+    textTheme: GoogleFonts.interTextTheme(),
     scaffoldBackgroundColor: Colors.white,
     cardColor: Colors.white,
     dividerColor: Colors.grey[200],
@@ -46,17 +49,28 @@ class ThemeProvider with ChangeNotifier {
         borderSide: BorderSide.none,
       ),
     ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color(0xFFA7D222),
+        foregroundColor: Colors.white,
+        textStyle: const TextStyle(fontWeight: FontWeight.w600),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+    ),
   );
 
   static final _darkTheme = ThemeData(
-    primaryColor: const Color(0xFF3B5998),
-    colorScheme: ColorScheme.dark(
-      primary: const Color(0xFF3B5998),
-      secondary: const Color(0xFF4A90E2),
-      error: Colors.red[400]!,
+    primaryColor: const Color(0xFFA7D222),
+    colorScheme: const ColorScheme.dark(
+      primary: Color(0xFFA7D222),
+      secondary: Color(0xFFA7D222),
+      error: Colors.redAccent,
       background: Colors.black,
-      surface: const Color(0xFF121212),
+      surface: Color(0xFF121212),
     ),
+    fontFamily: 'Inter',
+    textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
     scaffoldBackgroundColor: Colors.black,
     cardColor: Colors.black,
     dividerColor: const Color(0xFF333333),
@@ -68,13 +82,21 @@ class ThemeProvider with ChangeNotifier {
         borderSide: BorderSide.none,
       ),
     ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color(0xFFA7D222),
+        foregroundColor: Colors.black,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+    ),
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.black,
       elevation: 0,
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: Colors.black,
-      selectedItemColor: Color(0xFF3B5998),
+      selectedItemColor: Color(0xFFA7D222),
       unselectedItemColor: Colors.grey,
     ),
     dialogBackgroundColor: const Color(0xFF121212),

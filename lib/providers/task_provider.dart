@@ -16,12 +16,21 @@ class TaskProvider with ChangeNotifier {
 
   TaskProvider(this._taskService);
 
-  // Getters
   List<dynamic> get userTasks => _userTasks;
   List<TaskType> get taskTypes => _taskTypes;
   List<TAT> get tatList => _tatList;
   bool get isLoading => _isLoading;
   String? get error => _error;
+
+  /// ✅ New Getters Added
+  int get pendingTasksCount =>
+      _userTasks.where((task) => task['status'] == 'Pending').length;
+
+  int get pendingEscalations => _userTasks
+      .where((task) =>
+          task['isEscalated'] == true ||
+          (task['priority'] == 'High' && task['status'] != 'Completed'))
+      .length;
 
   Future<void> loadUserTasks(String userId) async {
     try {
@@ -88,7 +97,6 @@ class TaskProvider with ChangeNotifier {
         description: description,
       );
 
-      // Reload tasks after creation
       await loadUserTasks(userId);
     } catch (e) {
       _error = e.toString();
@@ -119,7 +127,6 @@ class TaskProvider with ChangeNotifier {
         status: status,
       );
 
-      // Reload tasks after update
       await loadUserTasks(userId);
     } catch (e) {
       _error = e.toString();

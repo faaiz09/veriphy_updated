@@ -1,247 +1,194 @@
-// lib/screens/reports_screen.dart
-// ignore_for_file: library_private_types_in_public_api, unnecessary_to_list_in_spreads
+// ignore_for_file: unused_local_variable
 
 import 'package:flutter/material.dart';
-import 'package:rm_veriphy/models/report.dart';
+import 'package:fl_chart/fl_chart.dart';
 
-class ReportsScreen extends StatefulWidget {
+class ReportsScreen extends StatelessWidget {
   const ReportsScreen({super.key});
 
   @override
-  _ReportsScreenState createState() => _ReportsScreenState();
-}
-
-class _ReportsScreenState extends State<ReportsScreen> {
-  final List<Report> reports = Report.getSampleReports();
-  String _selectedPeriod = 'This Month';
-
-  final Map<String, IconData> _icons = {
-    'bar_chart': Icons.bar_chart,
-    'policy': Icons.policy,
-    'trending_up': Icons.trending_up,
-    'analytics': Icons.analytics,
-    'assessment': Icons.assessment,
-    'pie_chart': Icons.pie_chart,
-  };
-
-  @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SafeArea(
-          child: Column(
-            children: [
-              // Period Selector
-              Container(
-                padding: const EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Text(
-                      'Period: ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                    InkWell(
-                      onTap: _showPeriodPicker,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color:
-                              Theme.of(context).primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              _selectedPeriod,
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(width: 4),
-                            Icon(
-                              Icons.arrow_drop_down,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              // Reports List
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: reports.length,
-                  itemBuilder: (context, index) =>
-                      _buildReportCard(reports[index]),
-                ),
-              ),
-            ],
-          ),
-        ),
-        // Floating Action Button
-        Positioned(
-          right: 16,
-          bottom: 16,
-          child: FloatingActionButton(
-            onPressed: () {
-              // Generate new report
-            },
-            tooltip: 'Generate Report',
-            child: const Icon(Icons.add),
-          ),
-        ),
-      ],
-    );
-  }
+    final theme = Theme.of(context);
+    final primaryColor = theme.colorScheme.primary;
 
-  // Rest of the code remains the same...
-  void _showPeriodPicker() {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        elevation: 0,
+        title: const Text('Reports & Analytics'),
+        leading: const Icon(Icons.arrow_back),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 12),
+            child: Icon(Icons.share),
+          )
+        ],
       ),
-      builder: (context) => Container(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
           children: [
-            const Padding(
-              padding: EdgeInsets.only(bottom: 16),
-              child: Text(
-                'Select Period',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+            // Metrics Grid
+            const Wrap(
+              spacing: 16,
+              runSpacing: 16,
+              children: [
+                _MetricCard(title: "Documents Collected", value: "23"),
+                _MetricCard(title: "This Week", value: "150"),
+                _MetricCard(title: "This Month", value: "620"),
+                _MetricCard(title: "Pending Escalations", value: "5"),
+                _MetricCard(title: "Avg Turnaround Time", value: "2.1 hrs"),
+              ],
+            ),
+            const SizedBox(height: 32),
+
+            // Chart
+            Text(
+              "Documents Collected",
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              height: 200,
+              child: BarChart(
+                BarChartData(
+                  borderData: FlBorderData(show: false),
+                  titlesData: FlTitlesData(
+                    leftTitles: const AxisTitles(
+                      sideTitles:
+                          SideTitles(showTitles: true, reservedSize: 28),
+                    ),
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (value, meta) {
+                          const days = [
+                            "Sun",
+                            "Mon",
+                            "Tue",
+                            "Wed",
+                            "Thu",
+                            "Fri",
+                            "Sat"
+                          ];
+                          return Text(days[value.toInt() % days.length]);
+                        },
+                      ),
+                    ),
+                    topTitles: const AxisTitles(
+                        sideTitles: SideTitles(showTitles: false)),
+                    rightTitles: const AxisTitles(
+                        sideTitles: SideTitles(showTitles: false)),
+                  ),
+                  gridData: const FlGridData(show: false),
+                  barGroups: [
+                    _barData(0, 14),
+                    _barData(1, 17),
+                    _barData(2, 23),
+                    _barData(3, 21),
+                    _barData(4, 0),
+                    _barData(5, 18),
+                    _barData(6, 13),
+                  ],
                 ),
               ),
             ),
-            ...['This Month', 'Last Month', 'Last 3 Months', 'Custom Range']
-                .map((period) => ListTile(
-                      leading: Icon(
-                        _selectedPeriod == period
-                            ? Icons.radio_button_checked
-                            : Icons.radio_button_unchecked,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      title: Text(period),
-                      onTap: () {
-                        setState(() {
-                          _selectedPeriod = period;
-                        });
-                        Navigator.pop(context);
-                      },
-                    ))
-                .toList(),
+
+            const SizedBox(height: 32),
+
+            // Leaderboard
+            Text(
+              "Team Leaderboard",
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 12),
+            const _LeaderboardItem(rank: 1, name: "Priya Agarwal"),
+            const _LeaderboardItem(rank: 2, name: "Vivek Menon"),
+            const _LeaderboardItem(rank: 3, name: "Akash Rana"),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildReportCard(Report report) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      shape: RoundedRectangleBorder(
+  BarChartGroupData _barData(int x, int y) {
+    return BarChartGroupData(
+      x: x,
+      barRods: [
+        BarChartRodData(
+          toY: y.toDouble(),
+          width: 14,
+          color: const Color(0xFFA7D222),
+          borderRadius: BorderRadius.circular(4),
+        ),
+      ],
+    );
+  }
+}
+
+class _MetricCard extends StatelessWidget {
+  final String title;
+  final String value;
+
+  const _MetricCard({
+    required this.title,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 160,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: InkWell(
-        onTap: () {
-          // View report details
-        },
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    _icons[report.icon] ?? Icons.description,
-                    size: 32,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          report.title,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          report.description,
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Icon(Icons.chevron_right),
-                ],
-              ),
-              if (report.data.isNotEmpty) ...[
-                const SizedBox(height: 16),
-                _buildReportData(report.data),
-              ],
-            ],
-          ),
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(value,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  )),
+          const SizedBox(height: 4),
+          Text(title,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Colors.grey[700],
+                  )),
+        ],
       ),
     );
   }
+}
 
-  Widget _buildReportData(Map<String, dynamic> data) {
-    return Wrap(
-      spacing: 16,
-      runSpacing: 8,
-      children: data.entries.map((entry) {
-        return Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 12,
-            vertical: 6,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Text(
-            '${entry.key}: ${entry.value}',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[800],
-            ),
-          ),
-        );
-      }).toList(),
+class _LeaderboardItem extends StatelessWidget {
+  final int rank;
+  final String name;
+
+  const _LeaderboardItem({required this.rank, required this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: Colors.grey.shade200)),
+      ),
+      child: Row(
+        children: [
+          Text("$rank",
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  )),
+          const SizedBox(width: 16),
+          Text(name, style: Theme.of(context).textTheme.bodyMedium),
+        ],
+      ),
     );
   }
 }
