@@ -121,7 +121,7 @@ class _HomeContentState extends State<HomeContent> {
         return Card(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          color: Theme.of(context).primaryColor,
+          color: Theme.of(context).colorScheme.primary,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Column(
@@ -131,19 +131,19 @@ class _HomeContentState extends State<HomeContent> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       'MTD Summary',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
                     Text(
                       'INR ${(data.totalProductAmount / 1000).toStringAsFixed(0)}k Revenue',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
                   ],
@@ -151,9 +151,9 @@ class _HomeContentState extends State<HomeContent> {
                 const SizedBox(height: 8),
                 Text(
                   '${data.completedCount} Policies Issued',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
-                    color: Colors.white70,
+                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -198,9 +198,9 @@ class _HomeContentState extends State<HomeContent> {
                               const SizedBox(width: 4),
                               Text(
                                 '${entry.value.value}',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 12,
-                                  color: Colors.white,
+                                  color: Theme.of(context).colorScheme.onPrimary,
                                 ),
                               ),
                             ],

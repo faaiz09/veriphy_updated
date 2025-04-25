@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rm_veriphy/providers/auth_provider.dart';
 import 'package:rm_veriphy/providers/theme_provider.dart';
-import 'package:rm_veriphy/screens/loading_screen.dart';
+import 'package:rm_veriphy/screens/select_role_screen.dart';
 import 'package:rm_veriphy/utils/error_utils.dart';
 import 'package:rm_veriphy/utils/token_manager.dart';
 
@@ -357,7 +357,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (success && mounted) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const LoadingScreen()),
+          MaterialPageRoute(builder: (_) => const SelectRoleScreen()),
         );
       } else if (mounted) {
         ErrorUtils.showError(

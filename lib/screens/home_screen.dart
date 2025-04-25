@@ -78,29 +78,22 @@ class _HomeScreenState extends State<HomeScreen>
       appBar: AppBar(
         elevation: 0,
         scrolledUnderElevation: 2,
-        backgroundColor: Colors.white,
+        backgroundColor:
+            theme.appBarTheme.backgroundColor ?? theme.colorScheme.surface,
         centerTitle: false,
         title: Row(
           children: [
             Image.asset(
               'assets/images/veriphy.png',
-              height: 28,
-            ),
-            const SizedBox(width: 12),
-            Text(
-              _getScreenTitle(),
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[800],
-              ),
+              height: 40, // Increased logo size
             ),
           ],
         ),
         actions: [
           // Search button
           IconButton(
-            icon: Icon(Icons.search, color: Colors.grey[700]),
+            icon: Icon(Icons.search,
+                color: theme.iconTheme.color ?? theme.colorScheme.onSurface),
             onPressed: () {
               // Search functionality
             },
@@ -125,13 +118,13 @@ class _HomeScreenState extends State<HomeScreen>
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: primaryColor.withOpacity(0.3),
+                  color: theme.dividerColor.withOpacity(0.3),
                   width: 2,
                 ),
               ),
               child: CircleAvatar(
                 radius: 18,
-                backgroundColor: primaryColor.withOpacity(0.1),
+                backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
                 child: Text(
                   userProfile?.firstName.isNotEmpty == true
                       ? userProfile!.firstName[0].toUpperCase()
@@ -164,6 +157,7 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget _buildMobileNavigation(Color primaryColor) {
+    final theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -178,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen>
       ),
       child: NavigationBar(
         height: 65,
-        backgroundColor: Colors.white,
+        backgroundColor: theme.colorScheme.surface,
         indicatorColor: primaryColor.withOpacity(0.1),
         selectedIndex: _currentIndex,
         onDestinationSelected: (index) {
@@ -192,7 +186,9 @@ class _HomeScreenState extends State<HomeScreen>
           (index) => NavigationDestination(
             icon: Icon(
               _outlinedIcons[index],
-              color: _currentIndex == index ? primaryColor : Colors.grey[600],
+              color: _currentIndex == index
+                  ? theme.colorScheme.primary
+                  : theme.iconTheme.color ?? theme.colorScheme.onSurface,
             ),
             selectedIcon: Icon(
               _icons[index],
@@ -206,6 +202,7 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget _buildTabletNavigation(Color primaryColor) {
+    final theme = Theme.of(context);
     return Container(
       height: 70,
       decoration: BoxDecoration(
@@ -244,16 +241,18 @@ class _HomeScreenState extends State<HomeScreen>
                         ? _icons[index]
                         : _outlinedIcons[index],
                     color: _currentIndex == index
-                        ? primaryColor
-                        : Colors.grey[600],
+                        ? theme.colorScheme.primary
+                        : theme.textTheme.bodyMedium?.color ??
+                            theme.colorScheme.onSurface,
                   ),
                   const SizedBox(width: 8),
                   Text(
                     _getNavLabel(index),
                     style: TextStyle(
                       color: _currentIndex == index
-                          ? primaryColor
-                          : Colors.grey[600],
+                          ? theme.colorScheme.primary
+                          : theme.textTheme.bodyMedium?.color ??
+                              theme.colorScheme.onSurface,
                       fontWeight: _currentIndex == index
                           ? FontWeight.w600
                           : FontWeight.normal,
@@ -280,21 +279,6 @@ class _HomeScreenState extends State<HomeScreen>
         return 'Reports';
       default:
         return '';
-    }
-  }
-
-  String _getScreenTitle() {
-    switch (_currentIndex) {
-      case 0:
-        return 'Dashboard';
-      case 1:
-        return 'Daily Tasks';
-      case 2:
-        return 'Chat';
-      case 3:
-        return 'Reports';
-      default:
-        return 'Veriphy';
     }
   }
 }
