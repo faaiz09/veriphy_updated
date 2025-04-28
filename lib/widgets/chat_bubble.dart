@@ -24,7 +24,7 @@ class ChatBubble extends StatelessWidget {
           if (!message.isMe) ...[
             CircleAvatar(
               backgroundColor:
-                  themeProvider.theme.colorScheme.secondary.withOpacity(0.2),
+                  themeProvider.theme.colorScheme.secondary.withAlpha(51),
               child: Text(
                 message.sender[0],
                 style:
@@ -40,7 +40,7 @@ class ChatBubble extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
               color: message.isMe
-                  ? themeProvider.theme.colorScheme.secondary.withOpacity(0.2)
+                  ? themeProvider.theme.colorScheme.secondary.withAlpha(51)
                   : themeProvider.theme.cardColor,
               borderRadius: BorderRadius.circular(20),
             ),

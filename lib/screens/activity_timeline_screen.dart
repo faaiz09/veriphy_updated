@@ -189,7 +189,7 @@ class ActivityTimelineItem extends StatelessWidget {
           Expanded(
             child: Container(
               width: 2,
-              color: Theme.of(context).primaryColor.withOpacity(0.3),
+              color: Theme.of(context).primaryColor.withAlpha(77),
             ),
           ),
       ],

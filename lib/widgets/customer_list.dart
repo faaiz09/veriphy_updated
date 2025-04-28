@@ -125,15 +125,15 @@ class _CustomerCard extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             color: isDarkMode
-                ? theme.primaryColor.withOpacity(0.2)
-                : theme.primaryColor.withOpacity(0.1),
+                ? theme.primaryColor.withAlpha(51)
+                : theme.primaryColor.withAlpha(26),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
             customer.productInfo.productType,
             style: TextStyle(
               color: isDarkMode
-                  ? theme.primaryColor.withOpacity(0.9)
+                  ? theme.primaryColor.withAlpha(230)
                   : theme.primaryColor,
               fontWeight: FontWeight.w500,
             ),
@@ -171,7 +171,7 @@ class _CustomerCard extends StatelessWidget {
       value: customer.collectedDocuments / customer.requiredDocuments,
       backgroundColor: isDarkMode ? Colors.grey[800] : Colors.grey[200],
       valueColor: AlwaysStoppedAnimation<Color>(
-        isDarkMode ? theme.primaryColor.withOpacity(0.8) : theme.primaryColor,
+        isDarkMode ? theme.primaryColor.withAlpha(204) : theme.primaryColor,
       ),
     );
   }

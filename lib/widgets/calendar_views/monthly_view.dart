@@ -37,7 +37,7 @@ class MonthlyView extends StatelessWidget {
         color: Theme.of(context).scaffoldBackgroundColor,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withAlpha(10),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -156,7 +156,7 @@ class MonthlyView extends StatelessWidget {
           color: isSelected
               ? Theme.of(context).primaryColor
               : isToday
-                  ? Theme.of(context).primaryColor.withOpacity(0.1)
+                  ? Theme.of(context).primaryColor.withAlpha(26)
                   : null,
           borderRadius: BorderRadius.circular(8),
           border: isToday && !isSelected
@@ -165,7 +165,7 @@ class MonthlyView extends StatelessWidget {
           boxShadow: isSelected || isToday
               ? [
                   BoxShadow(
-                    color: Theme.of(context).primaryColor.withOpacity(0.2),
+                    color: Theme.of(context).primaryColor.withAlpha(51),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),
@@ -179,9 +179,9 @@ class MonthlyView extends StatelessWidget {
               date.day.toString(),
               style: TextStyle(
                 color: !isCurrentMonth
-                    ? Colors.grey.withOpacity(0.5)
+                    ? Colors.grey.withAlpha(128)
                     : isSelected
-                        ? Colors.white
+                        ? Colors.white.withAlpha(204)
                         : isToday
                             ? Theme.of(context).primaryColor
                             : null,
@@ -201,7 +201,7 @@ class MonthlyView extends StatelessWidget {
                     margin: const EdgeInsets.symmetric(horizontal: 1),
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? Colors.white.withOpacity(0.8)
+                          ? Colors.white.withAlpha(204)
                           : tasks[i].color,
                       shape: BoxShape.circle,
                     ),
@@ -213,7 +213,7 @@ class MonthlyView extends StatelessWidget {
                   '+${tasks.length - 3}',
                   style: TextStyle(
                     fontSize: 8,
-                    color: isSelected ? Colors.white : Colors.grey,
+                    color: isSelected ? Colors.white : Colors.grey.withAlpha(51),
                   ),
                 ),
             ],
@@ -238,7 +238,7 @@ class MonthlyView extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
+            color: Colors.grey.withAlpha(20),
             blurRadius: 8,
             offset: const Offset(0, -2),
           ),
@@ -321,7 +321,7 @@ class MonthlyView extends StatelessWidget {
                   '${task.startTime.format(context)} - ${task.endTime.format(context)}',
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey[600],
+                    color: Colors.grey.withAlpha(128),
                   ),
                 ),
               ],

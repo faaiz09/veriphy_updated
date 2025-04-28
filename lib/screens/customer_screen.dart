@@ -133,7 +133,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
       child: Chip(
         label: Text(label),
         onDeleted: onDeleted,
-        backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
+        backgroundColor: Theme.of(context).primaryColor.withAlpha(10),
       ),
     );
   }

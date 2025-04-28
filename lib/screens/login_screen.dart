@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rm_veriphy/providers/auth_provider.dart';
 import 'package:rm_veriphy/providers/theme_provider.dart';
-import 'package:rm_veriphy/screens/select_role_screen.dart';
+import 'package:rm_veriphy/screens/admin_dashboard_screen.dart';
+import 'package:rm_veriphy/screens/dashboard_home_screen.dart';
 import 'package:rm_veriphy/utils/error_utils.dart';
 import 'package:rm_veriphy/utils/token_manager.dart';
 
@@ -53,10 +54,10 @@ class _LoginScreenState extends State<LoginScreen> {
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
               colors: [
-                primaryColor.withOpacity(0.2),
+                primaryColor.withAlpha(51), // 0.2 * 255 ≈ 51
                 Colors.white,
                 Colors.white,
-                primaryColor.withOpacity(0.2),
+                primaryColor.withAlpha(51), // 0.2 * 255 ≈ 51
               ],
             ),
           ),
@@ -71,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: primaryColor.withOpacity(0.3),
+                        color: primaryColor.withAlpha(77), // 0.3 * 255 ≈ 77
                         blurRadius: 20,
                         spreadRadius: 5,
                       ),
@@ -135,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 horizontal: 16,
                               ),
                               labelStyle: TextStyle(
-                                  color: primaryColor.withOpacity(0.8)),
+                                  color: primaryColor.withAlpha(204)), // 0.8 * 255 ≈ 204
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(16),
                                 borderSide:
@@ -192,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 horizontal: 16,
                               ),
                               labelStyle: TextStyle(
-                                  color: primaryColor.withOpacity(0.8)),
+                                  color: primaryColor.withAlpha(204)), // 0.8 * 255 ≈ 204
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(16),
                                 borderSide:
@@ -309,10 +310,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   margin: const EdgeInsets.only(top: 16),
                                   padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
-                                    color: Colors.red.withOpacity(0.1),
+                                    color: Colors.red.withAlpha(26), // 0.1 * 255 ≈ 26
                                     borderRadius: BorderRadius.circular(12),
                                     border: Border.all(
-                                        color: Colors.red.withOpacity(0.3)),
+                                        color: Colors.red.withAlpha(77)), // 0.3 * 255 ≈ 77
                                   ),
                                   child: Text(
                                     auth.error!,
@@ -355,10 +356,18 @@ class _LoginScreenState extends State<LoginScreen> {
           );
 
       if (success && mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const SelectRoleScreen()),
-        );
+        final user = context.read<AuthProvider>().user;
+        if (user != null && user.role.toLowerCase() == 'admin') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const AdminDashboardScreen()),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const DashboardHomeScreen()),
+          );
+        }
       } else if (mounted) {
         ErrorUtils.showError(
           context,

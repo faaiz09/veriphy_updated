@@ -17,6 +17,7 @@ class CreateTaskDialog extends StatefulWidget {
 }
 
 class _CreateTaskDialogState extends State<CreateTaskDialog> {
+  // WARNING: Do not reuse this GlobalKey in multiple widgets simultaneously!
   final _formKey = GlobalKey<FormState>();
   TaskType? _selectedTaskType;
   TAT? _selectedTAT;

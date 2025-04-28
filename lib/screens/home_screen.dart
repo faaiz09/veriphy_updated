@@ -118,13 +118,13 @@ class _HomeScreenState extends State<HomeScreen>
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: theme.dividerColor.withOpacity(0.3),
+                  color: theme.dividerColor.withAlpha(10),
                   width: 2,
                 ),
               ),
               child: CircleAvatar(
                 radius: 18,
-                backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+                backgroundColor: theme.colorScheme.primary.withAlpha(10),
                 child: Text(
                   userProfile?.firstName.isNotEmpty == true
                       ? userProfile!.firstName[0].toUpperCase()
@@ -163,7 +163,7 @@ class _HomeScreenState extends State<HomeScreen>
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withAlpha(10),
             blurRadius: 10,
             spreadRadius: 0,
             offset: const Offset(0, -2),
@@ -173,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen>
       child: NavigationBar(
         height: 65,
         backgroundColor: theme.colorScheme.surface,
-        indicatorColor: primaryColor.withOpacity(0.1),
+        indicatorColor: primaryColor.withAlpha(10),
         selectedIndex: _currentIndex,
         onDestinationSelected: (index) {
           setState(() => _currentIndex = index);
@@ -209,7 +209,7 @@ class _HomeScreenState extends State<HomeScreen>
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withAlpha(10),
             blurRadius: 10,
             spreadRadius: 0,
             offset: const Offset(0, -2),
@@ -230,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen>
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               decoration: BoxDecoration(
                 color: _currentIndex == index
-                    ? primaryColor.withOpacity(0.1)
+                    ? primaryColor.withAlpha(10)
                     : Colors.transparent,
                 borderRadius: BorderRadius.circular(12),
               ),

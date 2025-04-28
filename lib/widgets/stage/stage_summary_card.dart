@@ -31,7 +31,7 @@ class StageSummaryCard extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              color.withOpacity(0.8),
+              color.withAlpha(204),
               color,
             ],
           ),

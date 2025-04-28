@@ -37,7 +37,7 @@ class DailyView extends StatelessWidget {
         color: Theme.of(context).scaffoldBackgroundColor,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withAlpha(10),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -199,7 +199,7 @@ class DailyView extends StatelessWidget {
                   width: 2,
                   margin: const EdgeInsets.symmetric(vertical: 8),
                   decoration: BoxDecoration(
-                    color: task.color.withOpacity(0.5),
+                    color: Colors.grey.withAlpha(26),
                     borderRadius: BorderRadius.circular(1),
                   ),
                 ),
@@ -213,14 +213,14 @@ class DailyView extends StatelessWidget {
                 margin: const EdgeInsets.only(bottom: 16, left: 8),
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: task.color.withOpacity(0.1),
+                  color: task.color.withAlpha(128),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: task.color.withOpacity(0.3),
+                    color: task.color.withAlpha(77),
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
+                      color: Colors.grey.withAlpha(10),
                       blurRadius: 4,
                       offset: const Offset(0, 2),
                     ),
@@ -234,7 +234,7 @@ class DailyView extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: task.color.withOpacity(0.2),
+                            color: task.color.withAlpha(51),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(

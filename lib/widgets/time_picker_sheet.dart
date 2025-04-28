@@ -181,7 +181,7 @@ class ClockPainter extends CustomPainter {
 
     // Draw clock face
     final paint = Paint()
-      ..color = Colors.blue.withOpacity(0.1)
+      ..color = Colors.blue.withAlpha(26)
       ..style = PaintingStyle.fill;
     canvas.drawCircle(center, radius, paint);
 

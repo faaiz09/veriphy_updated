@@ -36,7 +36,7 @@ class WeeklyView extends StatelessWidget {
         color: Theme.of(context).scaffoldBackgroundColor,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withAlpha(26),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -77,7 +77,7 @@ class WeeklyView extends StatelessWidget {
                   Text(
                     '${DateFormat('MMM').format(controller.selectedDate)} ${controller.selectedDate.year}',
                     style: TextStyle(
-                      color: Colors.grey[600],
+                      color: Colors.grey.withAlpha(153),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -104,7 +104,7 @@ class WeeklyView extends StatelessWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withAlpha(26),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -133,9 +133,9 @@ class WeeklyView extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
           color: isSelected 
-              ? controller.primaryColor 
+              ? controller.primaryColor.withAlpha(26) 
               : isToday 
-                  ? controller.primaryColor.withOpacity(0.1) 
+                  ? controller.primaryColor.withAlpha(51) 
                   : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
         ),
@@ -144,7 +144,7 @@ class WeeklyView extends StatelessWidget {
             Text(
               DateFormat('E').format(date),
               style: TextStyle(
-                color: isSelected ? Colors.white : Colors.grey,
+                color: isSelected ? Colors.white : Colors.grey.withAlpha(153),
                 fontSize: 12,
               ),
             ),
@@ -155,9 +155,9 @@ class WeeklyView extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: isSelected 
-                    ? Colors.white.withOpacity(0.3) 
+                    ? Colors.white.withAlpha(77) 
                     : isToday 
-                        ? controller.primaryColor.withOpacity(0.2) 
+                        ? controller.primaryColor.withAlpha(51) 
                         : Colors.transparent,
               ),
               child: Center(
@@ -232,14 +232,14 @@ class WeeklyView extends StatelessWidget {
             Icon(
               Icons.event_note,
               size: 64,
-              color: Colors.grey[400],
+              color: Colors.grey.withAlpha(102),
             ),
             const SizedBox(height: 16),
             Text(
               'No tasks for ${DateFormat('EEEE, MMMM d').format(controller.selectedDate)}',
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.grey[600],
+                color: Colors.grey.withAlpha(153),
               ),
             ),
             const SizedBox(height: 8),
@@ -287,12 +287,12 @@ class WeeklyView extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
-          color: task.color.withOpacity(0.1),
+          color: task.color.withAlpha(26),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: task.color.withOpacity(0.3)),
+          border: Border.all(color: task.color.withAlpha(77)),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
+              color: Colors.grey.withAlpha(26),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),
@@ -322,7 +322,7 @@ class WeeklyView extends StatelessWidget {
                 Text(
                   task.subtitle,
                   style: TextStyle(
-                    color: Colors.grey[600],
+                    color: Colors.grey.withAlpha(153),
                     fontSize: 12,
                   ),
                 ),
@@ -330,12 +330,12 @@ class WeeklyView extends StatelessWidget {
               const SizedBox(height: 4),
               Row(
                 children: [
-                  Icon(Icons.access_time, size: 14, color: Colors.grey[600]),
+                  Icon(Icons.access_time, size: 14, color: Colors.grey.withAlpha(153)),
                   const SizedBox(width: 4),
                   Text(
                     '${task.startTime.format(context)} - ${task.endTime.format(context)}',
                     style: TextStyle(
-                      color: Colors.grey[600],
+                      color: Colors.grey.withAlpha(153),
                       fontSize: 12,
                     ),
                   ),

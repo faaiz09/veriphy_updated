@@ -41,7 +41,7 @@ class YearlyView extends StatelessWidget {
         color: Theme.of(context).scaffoldBackgroundColor,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withAlpha(10),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -131,7 +131,7 @@ class YearlyView extends StatelessWidget {
                       Navigator.pop(context, DateTime(year, controller.selectedDate.month, 1));
                     },
                     selected: isSelected,
-                    selectedTileColor: Theme.of(context).primaryColor.withOpacity(0.1),
+                    selectedTileColor: Theme.of(context).primaryColor.withAlpha(26),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -167,7 +167,7 @@ class YearlyView extends StatelessWidget {
           color: isSelected
               ? Theme.of(context).primaryColor
               : isCurrentMonth
-                  ? Theme.of(context).primaryColor.withOpacity(0.1)
+                  ? Theme.of(context).primaryColor.withAlpha(10)
                   : Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
@@ -175,11 +175,11 @@ class YearlyView extends StatelessWidget {
                 ? Theme.of(context).primaryColor
                 : isCurrentMonth
                     ? Theme.of(context).primaryColor
-                    : Colors.grey.withOpacity(0.3),
+                    : Colors.grey.withAlpha(77),
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
+              color: Colors.grey.withAlpha(10),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),
@@ -216,10 +216,10 @@ class YearlyView extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? Colors.white.withOpacity(0.2)
+                        ? Colors.white.withAlpha(51)
                         : isCurrentMonth
-                            ? Theme.of(context).primaryColor.withOpacity(0.2)
-                            : Colors.grey.withOpacity(0.1),
+                            ? Theme.of(context).primaryColor.withAlpha(51)
+                            : Colors.grey.withAlpha(26),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
@@ -227,7 +227,7 @@ class YearlyView extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 12,
                       color: isSelected
-                          ? Colors.white
+                          ? Colors.white.withAlpha(204)
                           : isCurrentMonth
                               ? Theme.of(context).primaryColor
                               : Colors.grey[600],
@@ -246,7 +246,7 @@ class YearlyView extends StatelessWidget {
                         margin: const EdgeInsets.symmetric(horizontal: 1),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? Colors.white.withOpacity(0.8)
+                              ? Colors.white.withAlpha(204)
                               : tasks[i].color,
                           shape: BoxShape.circle,
                         ),

@@ -18,6 +18,7 @@ class SummaryItem extends StatelessWidget {
         Text(
           value,
           style: TextStyle(
+            inherit: true,
             color: Theme.of(context).colorScheme.onPrimary,
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -27,7 +28,8 @@ class SummaryItem extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
+            inherit: true,
+            color: Theme.of(context).colorScheme.onPrimary.withAlpha(179),
             fontSize: 16,
           ),
         ),

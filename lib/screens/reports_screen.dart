@@ -15,8 +15,8 @@ class ReportsScreen extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        title: const Text('Reports & Analytics'),
-        leading: const Icon(Icons.arrow_back),
+        automaticallyImplyLeading: false,
+        title: null,
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 12),

@@ -148,7 +148,7 @@ class _SelectRoleScreenState extends State<SelectRoleScreen> {
             width: isSelected ? 2 : 1,
           ),
           borderRadius: BorderRadius.circular(12),
-          color: isSelected ? primaryColor.withOpacity(0.1) : Colors.transparent,
+          color: isSelected ? primaryColor.withAlpha(26) : Colors.transparent,
         ),
         child: Center(
           child: Text(

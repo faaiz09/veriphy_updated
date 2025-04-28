@@ -320,7 +320,7 @@ class NotificationCard extends StatelessWidget {
       elevation: notification.isRead ? 0 : 2,
       color: notification.isRead
           ? theme.cardColor
-          : theme.primaryColor.withOpacity(0.05),
+          : theme.primaryColor.withAlpha(13),
       margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
       child: InkWell(
         onTap: onTap,
@@ -379,7 +379,7 @@ class NotificationCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: notification.type.getColor(context).withOpacity(0.1),
+        color: notification.type.getColor(context).withAlpha(26),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Icon(

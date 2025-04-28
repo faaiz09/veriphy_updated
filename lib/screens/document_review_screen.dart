@@ -94,7 +94,7 @@ class _DocumentReviewScreenState extends State<DocumentReviewScreen> {
       width: double.infinity,
       margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.withOpacity(0.3)),
+        border: Border.all(color: Colors.grey.withAlpha(30)),
         borderRadius: BorderRadius.circular(12),
       ),
       child: ClipRRect(
@@ -107,10 +107,10 @@ class _DocumentReviewScreenState extends State<DocumentReviewScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.error_outline,
-                    size: 48, color: Colors.grey.withOpacity(0.5)),
+                    size: 48, color: Colors.grey.withAlpha(50)),
                 const SizedBox(height: 16),
                 Text('Failed to load document',
-                    style: TextStyle(color: Colors.grey.withOpacity(0.7))),
+                    style: TextStyle(color: Colors.grey.withAlpha(70))),
               ],
             ),
           ),

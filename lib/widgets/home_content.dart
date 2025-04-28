@@ -153,7 +153,7 @@ class _HomeContentState extends State<HomeContent> {
                   '${data.completedCount} Policies Issued',
                   style: TextStyle(
                     fontSize: 14,
-                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
+                    color: Theme.of(context).colorScheme.onPrimary.withAlpha(179),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -290,7 +290,7 @@ class _HomeContentState extends State<HomeContent> {
         labelPadding: const EdgeInsets.symmetric(horizontal: 4),
         padding: const EdgeInsets.symmetric(horizontal: 4),
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
+        backgroundColor: Theme.of(context).primaryColor.withAlpha(26),
       ),
     );
   }

@@ -129,7 +129,7 @@ class _LoadingScreenState extends State<LoadingScreen>
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: primaryColor.withOpacity(0.2),
+                              color: primaryColor.withAlpha(20),
                               blurRadius: 15,
                               spreadRadius: 2,
                             ),
@@ -194,14 +194,14 @@ class _LoadingScreenState extends State<LoadingScreen>
                             borderRadius: BorderRadius.circular(16),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.grey.withOpacity(0.1),
+                                color: Colors.grey.withAlpha(10),
                                 blurRadius: 10,
                                 spreadRadius: 0,
                                 offset: const Offset(0, 4),
                               ),
                             ],
                             border: Border.all(
-                              color: Colors.grey.withOpacity(0.1),
+                              color: Colors.grey.withAlpha(10),
                               width: 1,
                             ),
                           ),
@@ -262,7 +262,7 @@ class _LoadingScreenState extends State<LoadingScreen>
                                         gradient: LinearGradient(
                                           colors: [
                                             primaryColor,
-                                            primaryColor.withOpacity(0.8),
+                                            primaryColor.withAlpha(80),
                                           ],
                                         ),
                                         borderRadius: BorderRadius.circular(10),
@@ -318,7 +318,7 @@ class _LoadingScreenState extends State<LoadingScreen>
     return Container(
       height: 40,
       width: 1,
-      color: Colors.grey.withOpacity(0.2),
+      color: Colors.grey.withAlpha(20),
     );
   }
 

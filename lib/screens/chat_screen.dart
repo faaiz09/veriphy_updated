@@ -175,7 +175,7 @@ class _ChatScreenState extends State<ChatScreen> {
           BoxShadow(
             offset: const Offset(0, -2),
             blurRadius: 6,
-            color: theme.shadowColor.withOpacity(0.1),
+            color: theme.shadowColor.withAlpha(10),
           ),
         ],
       ),
